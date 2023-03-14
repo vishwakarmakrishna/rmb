@@ -1,0 +1,12 @@
+export 'assets.gen.dart';
+export 'color_manager.dart';
+export 'font_manager.dart';
+export 'fonts.gen.dart';
+export 'icon_manger.dart';
+export 'styles_manager.dart';
+export 'strings_manager.dart';
+export 'theme_manager.dart';
+export 'values_manager.dart';
+export 'router_manager.dart';
+export 'navigation_manager.dart';
+export 'validator_manager.dart';
