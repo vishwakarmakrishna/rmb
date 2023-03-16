@@ -20,8 +20,7 @@ class _MyAppState extends State<MyApp> {
       theme: getApplicationTheme(),
       builder: RouteManager.builder,
       routerConfig: RouteManager.getrouter(
-        // initialRoute: RouterStrings.splashPath,
-        initialRoute: RouterStrings.editPath,
+        initialRoute: RouterStrings.splashPath,
       ),
     );
   }

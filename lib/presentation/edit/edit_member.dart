@@ -1,5 +1,10 @@
-import 'package:dotted_border/dotted_border.dart';
+import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:rmb/app/app_prefs.dart';
+import 'package:rmb/app/di.dart';
+import 'package:rmb/blocs/user_bloc.dart';
+import 'package:rmb/domain/model/user/user_model.dart';
+import 'package:rmb/domain/repository/user/user_repo.dart';
 import 'package:rmb/resources/resources.dart';
 
 class EditMember extends StatefulWidget {
@@ -10,7 +15,30 @@ class EditMember extends StatefulWidget {
 }
 
 class _EditMemberState extends State<EditMember> {
+  final AppPreferences _appPreferences = instance<AppPreferences>();
+  late UserRepository _userRepository;
   final _formKey = GlobalKey<FormState>();
+  late TextEditingController genderController;
+  late TextEditingController firstNameController;
+  late TextEditingController middleNameController;
+  late TextEditingController lastNameController;
+  late TextEditingController mobileNumberController;
+  late TextEditingController occupationController;
+  late TextEditingController emailController;
+
+  @override
+  void initState() {
+    super.initState();
+    genderController = TextEditingController();
+    firstNameController = TextEditingController();
+    middleNameController = TextEditingController();
+    lastNameController = TextEditingController();
+    mobileNumberController = TextEditingController();
+    occupationController = TextEditingController();
+    emailController = TextEditingController();
+    _userRepository = UserRepository(_appPreferences);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,25 +58,25 @@ class _EditMemberState extends State<EditMember> {
               children: [
                 SectionWidget(
                   title: AppStrings.firstName,
-                  controller: TextEditingController(),
+                  controller: firstNameController,
                   validator: (value) =>
                       ValidatorManager.validateFirstName(value),
                 ),
                 SectionWidget(
                   title: AppStrings.middleName,
-                  controller: TextEditingController(),
+                  controller: middleNameController,
                   validator: (value) =>
                       ValidatorManager.validateMiddleName(value),
                 ),
                 SectionWidget(
                   title: AppStrings.lastName,
-                  controller: TextEditingController(),
+                  controller: lastNameController,
                   validator: (value) =>
                       ValidatorManager.validateLastName(value),
                 ),
                 SectionWidget(
                   title: AppStrings.mobileNumber,
-                  controller: TextEditingController(),
+                  controller: mobileNumberController,
                   validator: (value) => ValidatorManager.validateMobile(value),
                 ),
                 CustomSectionWidget(
@@ -57,189 +85,203 @@ class _EditMemberState extends State<EditMember> {
                     height: AppSize.s40,
                     width: MediaQuery.of(context).size.width,
                     child: _GenderSelectionView(
-                      controller: TextEditingController(),
+                      controller: genderController,
                     ),
                   ),
                 ),
                 SectionWidget(
                   title: AppStrings.occupation,
-                  controller: TextEditingController(),
+                  controller: occupationController,
                   validator: (value) =>
                       ValidatorManager.validateOccupation(value),
                 ),
                 SectionWidget(
                   title: AppStrings.email,
-                  controller: TextEditingController(),
+                  controller: emailController,
                   validator: (value) => ValidatorManager.validateEmail(value),
                 ),
-                const TitleWidget(
-                  title: AppStrings.addressInformation,
-                ),
-                SectionWidget(
-                  title: AppStrings.addressLine1,
-                  controller: TextEditingController(),
-                  validator: (value) =>
-                      ValidatorManager.validateAddressLine1(value),
-                ),
-                SectionWidget(
-                  title: AppStrings.addressLine2,
-                  controller: TextEditingController(),
-                  validator: (value) =>
-                      ValidatorManager.validateAddressLine1(value),
-                ),
-                SectionWidget(
-                  title: AppStrings.area,
-                  controller: TextEditingController(),
-                  validator: (value) => ValidatorManager.validateArea(value),
-                ),
-                SectionWidget(
-                  title: AppStrings.city,
-                  controller: TextEditingController(),
-                  validator: (value) => ValidatorManager.validateCity(value),
-                  suffixIcon: Icon(
-                    IconsManager.arrowDown,
-                    color: ColorManager.primary,
-                  ),
-                ),
-                SectionWidget(
-                  title: AppStrings.state,
-                  controller: TextEditingController(),
-                  validator: (value) => ValidatorManager.validateState(value),
-                  suffixIcon: Icon(
-                    IconsManager.arrowDown,
-                    color: ColorManager.primary,
-                  ),
-                ),
-                SectionWidget(
-                  title: AppStrings.pincode,
-                  controller: TextEditingController(),
-                  validator: (value) =>
-                      ValidatorManager.validatePostCode(value),
-                ),
-                SectionWidget(
-                  title: AppStrings.businessName,
-                  controller: TextEditingController(),
-                  validator: (value) =>
-                      ValidatorManager.validateBusinessName(value),
-                ),
-                SectionWidget(
-                  title: AppStrings.uploadLogo,
-                  controller: TextEditingController(),
-                  validator: (value) =>
-                      ValidatorManager.validateUploadLogo(value),
-                  suffixIcon: Container(
-                    height: AppSize.s35,
-                    width: AppSize.s80,
-                    margin: const EdgeInsets.all(AppPadding.p10),
-                    decoration: BoxDecoration(
-                      color: ColorManager.white,
-                      borderRadius: BorderRadius.circular(AppSize.s12),
-                    ),
-                    alignment: Alignment.center,
-                    child: Text(
-                      AppStrings.upload,
-                      style: getRegularStyle(
-                        color: ColorManager.black,
-                        fontSize: AppSize.s12,
-                      ),
-                    ),
-                  ),
-                ),
-                const _SubCat(),
-                SectionWidget(
-                  title: AppStrings.about,
-                  controller: TextEditingController(),
-                  validator: (value) => ValidatorManager.validateAbout(value),
-                ),
-                SectionWidget(
-                  title: AppStrings.productorServices,
-                  controller: TextEditingController(),
-                  validator: (value) =>
-                      ValidatorManager.validateProductOrServices(value),
-                ),
-                SectionWidget(
-                  title: AppStrings.gives,
-                  controller: TextEditingController(),
-                  validator: (value) => ValidatorManager.validateGives(value),
-                ),
-                SectionWidget(
-                  title: AppStrings.asks,
-                  controller: TextEditingController(),
-                  validator: (value) => ValidatorManager.validateAsks(value),
-                ),
-                CustomSectionWidget(
-                  title: AppStrings.dateOfBirth,
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: SectionWidget.buildTextFormField(
-                          controller: TextEditingController(),
-                          title: AppStrings.month,
-                          hintText: AppStrings.month,
-                          suffixIcon: Icon(
-                            IconsManager.arrowDown,
-                            color: ColorManager.primary,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        width: AppSize.s5,
-                      ),
-                      Expanded(
-                        child: SectionWidget.buildTextFormField(
-                          controller: TextEditingController(),
-                          title: AppStrings.day,
-                          hintText: AppStrings.day,
-                          suffixIcon: Icon(
-                            IconsManager.arrowDown,
-                            color: ColorManager.primary,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        width: AppSize.s5,
-                      ),
-                      Expanded(
-                        child: SectionWidget.buildTextFormField(
-                          controller: TextEditingController(),
-                          title: AppStrings.year,
-                          hintText: AppStrings.year,
-                          suffixIcon: Icon(
-                            IconsManager.arrowDown,
-                            color: ColorManager.primary,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                SectionWidget(
-                  title: AppStrings.facebook,
-                  controller: TextEditingController(),
-                  validator: (value) =>
-                      ValidatorManager.validateFacebook(value),
-                ),
-                SectionWidget(
-                  title: AppStrings.instagram,
-                  controller: TextEditingController(),
-                  validator: (value) =>
-                      ValidatorManager.validateInstagram(value),
-                ),
-                SectionWidget(
-                  title: AppStrings.linkedin,
-                  controller: TextEditingController(),
-                  validator: (value) =>
-                      ValidatorManager.validateLinkedIn(value),
-                ),
+                // const TitleWidget(
+                //   title: AppStrings.addressInformation,
+                // ),
+                // SectionWidget(
+                //   title: AppStrings.addressLine1,
+                //   controller: TextEditingController(),
+                //   validator: (value) =>
+                //       ValidatorManager.validateAddressLine1(value),
+                // ),
+                // SectionWidget(
+                //   title: AppStrings.addressLine2,
+                //   controller: TextEditingController(),
+                //   validator: (value) =>
+                //       ValidatorManager.validateAddressLine1(value),
+                // ),
+                // SectionWidget(
+                //   title: AppStrings.area,
+                //   controller: TextEditingController(),
+                //   validator: (value) => ValidatorManager.validateArea(value),
+                // ),
+                // SectionWidget(
+                //   title: AppStrings.city,
+                //   controller: TextEditingController(),
+                //   validator: (value) => ValidatorManager.validateCity(value),
+                //   suffixIcon: Icon(
+                //     IconsManager.arrowDown,
+                //     color: ColorManager.primary,
+                //   ),
+                // ),
+                // SectionWidget(
+                //   title: AppStrings.state,
+                //   controller: TextEditingController(),
+                //   validator: (value) => ValidatorManager.validateState(value),
+                //   suffixIcon: Icon(
+                //     IconsManager.arrowDown,
+                //     color: ColorManager.primary,
+                //   ),
+                // ),
+                // SectionWidget(
+                //   title: AppStrings.pincode,
+                //   controller: TextEditingController(),
+                //   validator: (value) =>
+                //       ValidatorManager.validatePostCode(value),
+                // ),
+                // SectionWidget(
+                //   title: AppStrings.businessName,
+                //   controller: TextEditingController(),
+                //   validator: (value) =>
+                //       ValidatorManager.validateBusinessName(value),
+                // ),
+                // SectionWidget(
+                //   title: AppStrings.uploadLogo,
+                //   controller: TextEditingController(),
+                //   validator: (value) =>
+                //       ValidatorManager.validateUploadLogo(value),
+                //   suffixIcon: Container(
+                //     height: AppSize.s35,
+                //     width: AppSize.s80,
+                //     margin: const EdgeInsets.all(AppPadding.p10),
+                //     decoration: BoxDecoration(
+                //       color: ColorManager.white,
+                //       borderRadius: BorderRadius.circular(AppSize.s12),
+                //     ),
+                //     alignment: Alignment.center,
+                //     child: Text(
+                //       AppStrings.upload,
+                //       style: getRegularStyle(
+                //         color: ColorManager.black,
+                //         fontSize: AppSize.s12,
+                //       ),
+                //     ),
+                //   ),
+                // ),
+                // const _SubCat(),
+                // SectionWidget(
+                //   title: AppStrings.about,
+                //   controller: TextEditingController(),
+                //   validator: (value) => ValidatorManager.validateAbout(value),
+                // ),
+                // SectionWidget(
+                //   title: AppStrings.productorServices,
+                //   controller: TextEditingController(),
+                //   validator: (value) =>
+                //       ValidatorManager.validateProductOrServices(value),
+                // ),
+                // SectionWidget(
+                //   title: AppStrings.gives,
+                //   controller: TextEditingController(),
+                //   validator: (value) => ValidatorManager.validateGives(value),
+                // ),
+                // SectionWidget(
+                //   title: AppStrings.asks,
+                //   controller: TextEditingController(),
+                //   validator: (value) => ValidatorManager.validateAsks(value),
+                // ),
+                // CustomSectionWidget(
+                //   title: AppStrings.dateOfBirth,
+                //   child: Row(
+                //     children: [
+                //       Expanded(
+                //         child: SectionWidget.buildTextFormField(
+                //           controller: TextEditingController(),
+                //           title: AppStrings.month,
+                //           hintText: AppStrings.month,
+                //           suffixIcon: Icon(
+                //             IconsManager.arrowDown,
+                //             color: ColorManager.primary,
+                //           ),
+                //         ),
+                //       ),
+                //       const SizedBox(
+                //         width: AppSize.s5,
+                //       ),
+                //       Expanded(
+                //         child: SectionWidget.buildTextFormField(
+                //           controller: TextEditingController(),
+                //           title: AppStrings.day,
+                //           hintText: AppStrings.day,
+                //           suffixIcon: Icon(
+                //             IconsManager.arrowDown,
+                //             color: ColorManager.primary,
+                //           ),
+                //         ),
+                //       ),
+                //       const SizedBox(
+                //         width: AppSize.s5,
+                //       ),
+                //       Expanded(
+                //         child: SectionWidget.buildTextFormField(
+                //           controller: TextEditingController(),
+                //           title: AppStrings.year,
+                //           hintText: AppStrings.year,
+                //           suffixIcon: Icon(
+                //             IconsManager.arrowDown,
+                //             color: ColorManager.primary,
+                //           ),
+                //         ),
+                //       ),
+                //     ],
+                //   ),
+                // ),
+                // SectionWidget(
+                //   title: AppStrings.facebook,
+                //   controller: TextEditingController(),
+                //   validator: (value) =>
+                //       ValidatorManager.validateFacebook(value),
+                // ),
+                // SectionWidget(
+                //   title: AppStrings.instagram,
+                //   controller: TextEditingController(),
+                //   validator: (value) =>
+                //       ValidatorManager.validateInstagram(value),
+                // ),
+                // SectionWidget(
+                //   title: AppStrings.linkedin,
+                //   controller: TextEditingController(),
+                //   validator: (value) =>
+                //       ValidatorManager.validateLinkedIn(value),
+                // ),
               ],
             ),
           ),
         ),
       ),
       bottomNavigationBar: InkResponse(
-        onTap: () {
+        onTap: () async {
           if (_formKey.currentState!.validate()) {
             // Navigator.pop(context);
+            log('save');
+
+            final user = User(
+              firstName: firstNameController.text,
+              middleName: middleNameController.text,
+              lastName: lastNameController.text,
+              mobileNumber: mobileNumberController.text,
+              gender: genderController.text,
+              occupation: occupationController.text,
+              email: emailController.text,
+            );
+
+            log(user.toJson().toString(), name: 'user');
+            await _userRepository.addUser(user);
           }
         },
         child: Container(
@@ -263,70 +305,70 @@ class _EditMemberState extends State<EditMember> {
   }
 }
 
-class _SubCat extends StatelessWidget {
-  const _SubCat({
-    Key? key,
-  }) : super(key: key);
+// class _SubCat extends StatelessWidget {
+//   const _SubCat({
+//     Key? key,
+//   }) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(
-        bottom: AppSize.s15,
-      ),
-      child: DottedBorder(
-        dashPattern: const [AppSize.s3, AppSize.s3],
-        color: ColorManager.black,
-        radius: const Radius.circular(AppSize.s12),
-        borderType: BorderType.RRect,
-        strokeWidth: 1,
-        child: Padding(
-          padding: const EdgeInsets.only(
-            left: AppSize.s15,
-            right: AppSize.s15,
-            top: AppSize.s15,
-          ),
-          child: CustomSectionWidget(
-            title: AppStrings.addNewCategory,
-            titleStyle: getRegularStyle(
-              color: ColorManager.primary,
-              fontSize: AppSize.s14,
-            ),
-            tralling: Icon(
-              IconsManager.delete,
-              color: ColorManager.red,
-            ),
-            child: Flexible(
-              child: Row(
-                children: [
-                  Expanded(
-                    flex: 5,
-                    child: SectionWidget(
-                      title: AppStrings.subCategory,
-                      controller: TextEditingController(),
-                      validator: (value) =>
-                          ValidatorManager.validateBusinessSubCategory(value),
-                    ),
-                  ),
-                  const SizedBox(width: AppSize.s10),
-                  Expanded(
-                    flex: 3,
-                    child: SectionWidget(
-                      title: AppStrings.adjFactorPrecentage,
-                      controller: TextEditingController(),
-                      validator: (value) =>
-                          ValidatorManager.validateAdjFactor(value),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Padding(
+//       padding: const EdgeInsets.only(
+//         bottom: AppSize.s15,
+//       ),
+//       child: DottedBorder(
+//         dashPattern: const [AppSize.s3, AppSize.s3],
+//         color: ColorManager.black,
+//         radius: const Radius.circular(AppSize.s12),
+//         borderType: BorderType.RRect,
+//         strokeWidth: 1,
+//         child: Padding(
+//           padding: const EdgeInsets.only(
+//             left: AppSize.s15,
+//             right: AppSize.s15,
+//             top: AppSize.s15,
+//           ),
+//           child: CustomSectionWidget(
+//             title: AppStrings.addNewCategory,
+//             titleStyle: getRegularStyle(
+//               color: ColorManager.primary,
+//               fontSize: AppSize.s14,
+//             ),
+//             tralling: Icon(
+//               IconsManager.delete,
+//               color: ColorManager.red,
+//             ),
+//             child: Flexible(
+//               child: Row(
+//                 children: [
+//                   Expanded(
+//                     flex: 5,
+//                     child: SectionWidget(
+//                       title: AppStrings.subCategory,
+//                       controller: TextEditingController(),
+//                       validator: (value) =>
+//                           ValidatorManager.validateBusinessSubCategory(value),
+//                     ),
+//                   ),
+//                   const SizedBox(width: AppSize.s10),
+//                   Expanded(
+//                     flex: 3,
+//                     child: SectionWidget(
+//                       title: AppStrings.adjFactorPrecentage,
+//                       controller: TextEditingController(),
+//                       validator: (value) =>
+//                           ValidatorManager.validateAdjFactor(value),
+//                     ),
+//                   ),
+//                 ],
+//               ),
+//             ),
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }
 
 class TitleWidget extends StatelessWidget {
   const TitleWidget({Key? key, required this.title}) : super(key: key);
@@ -383,41 +425,61 @@ class _GenderSelectionViewState extends State<_GenderSelectionView> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-        shrinkWrap: true,
-        scrollDirection: Axis.horizontal,
-        itemCount: _allGendersList.length,
-        itemBuilder: (context, index) {
-          return ValueListenableBuilder<String?>(
-              valueListenable: _selectedGender,
-              builder: (context, value, child) {
-                return InkResponse(
-                  onTap: () {
-                    _selectedGender.value = _allGendersList[index];
-                    if (_selectedGender.value != null) {
-                      widget.controller.text = _selectedGender.value!;
-                    }
-                  },
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      value == _allGendersList[index]
-                          ? selectedRadio()
-                          : unselectedRadio(),
-                      Flexible(
-                        child: Text(
-                          _allGendersList[index],
-                          style: getRegularStyle(
-                            color: ColorManager.black,
-                            fontSize: AppSize.s14,
+    return FormField<String?>(
+      validator: (value) =>
+          ValidatorManager.validateGender(_selectedGender.value),
+      builder: (FormFieldState<String?> state) => Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Flexible(
+            child: ListView.builder(
+                shrinkWrap: true,
+                scrollDirection: Axis.horizontal,
+                itemCount: _allGendersList.length,
+                itemBuilder: (context, index) {
+                  return ValueListenableBuilder<String?>(
+                      valueListenable: _selectedGender,
+                      builder: (context, value, child) {
+                        return InkResponse(
+                          onTap: () {
+                            _selectedGender.value = _allGendersList[index];
+                            if (_selectedGender.value != null) {
+                              widget.controller.text = _selectedGender.value!;
+                            }
+                          },
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              value == _allGendersList[index]
+                                  ? selectedRadio()
+                                  : unselectedRadio(),
+                              Flexible(
+                                child: Text(
+                                  _allGendersList[index],
+                                  style: getRegularStyle(
+                                    color: ColorManager.black,
+                                    fontSize: AppSize.s14,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-              });
-        });
+                        );
+                      });
+                }),
+          ),
+          if (state.errorText != null)
+            Text(
+              state.errorText!,
+              style: getRegularStyle(
+                color: ColorManager.red,
+                fontSize: AppSize.s12,
+              ),
+            )
+        ],
+      ),
+    );
   }
 
   Padding unselectedRadio() {

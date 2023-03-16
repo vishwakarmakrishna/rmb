@@ -29,6 +29,7 @@ class MembersBloc {
 
       membersListSink.add(ApiResponse.completed(members));
     } catch (e) {
+      if (_membersListController.isClosed) return;
       membersListSink.add(ApiResponse.error(e.toString()));
       debugPrint('$e');
     }

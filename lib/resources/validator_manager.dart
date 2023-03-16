@@ -1,4 +1,12 @@
 class ValidatorManager {
+  // Gender
+  static String? validateGender(String? value) {
+    if (value == null || value.isEmpty) {
+      return ValidatorString.genderEmpty;
+    }
+    return null;
+  }
+
   // First Name
   static String? validateFirstName(String? value) {
     if (value == null || value.isEmpty) {
@@ -229,6 +237,7 @@ class ValidatorManager {
 
 class ValidatorString {
   static const String firstNameEmpty = 'First Name cannot be empty';
+  static const String genderEmpty = 'Gender cannot be empty';
   static const String lastNameEmpty = 'Last Name cannot be empty';
   static const String middleNameEmpty = 'Middle Name cannot be empty';
   static const String mobileEmpty = 'Mobile cannot be empty';

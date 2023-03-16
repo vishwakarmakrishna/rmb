@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rmb/resources/resources.dart';
 
 class Error extends StatelessWidget {
   final String? errorMessage;
@@ -25,11 +26,11 @@ class Error extends StatelessWidget {
           const SizedBox(height: 8),
           ElevatedButton(
             onPressed: onRetryPressed,
-            child: const Text(
-              'Retry',
-              style: TextStyle(
-//                color: Colors.white,
-                  ),
+            child: Text(
+              AppStrings.retryAgain,
+              style: getBoldStyle(
+                color: ColorManager.white,
+              ),
             ),
           )
         ],
@@ -63,11 +64,11 @@ class Empty extends StatelessWidget {
           const SizedBox(height: 8),
           ElevatedButton(
             onPressed: onRetryPressed,
-            child: const Text(
-              'Retry',
-              style: TextStyle(
-//                color: Colors.white,
-                  ),
+            child: Text(
+              AppStrings.retryAgain,
+              style: getBoldStyle(
+                color: ColorManager.white,
+              ),
             ),
           )
         ],
@@ -95,8 +96,8 @@ class Loading extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 24),
-          const CircularProgressIndicator(
-            valueColor: AlwaysStoppedAnimation<Color>(Colors.lightGreen),
+          CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation<Color>(ColorManager.blue),
           ),
         ],
       ),

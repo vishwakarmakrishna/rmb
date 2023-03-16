@@ -19,6 +19,8 @@ class AppStrings {
   static const String records = "Records";
   static const String active = "Active";
   static const String inactive = "Inactive";
+  static const String all = "All";
+  static const String users = "Users";
 
   static const String searchMembers = "Search Members";
 
@@ -28,6 +30,7 @@ class AppStrings {
 
   static const String firstName = 'First Name';
   static const String middleName = 'Middle Name';
+  static const String fullName = 'Full Name';
   static const String lastName = 'Last Name';
   static const String mobileNumber = 'Mobile Number';
   static const String occupation = 'Occupation';

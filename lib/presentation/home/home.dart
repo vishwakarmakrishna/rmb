@@ -55,6 +55,33 @@ class _HomeViewState extends State<HomeView> {
                     ),
                   ),
                 ),
+                const SizedBox(width: AppSize.s10),
+                InkResponse(
+                  onTap: () {
+                    context.pushNamed(RouterStrings.userPath);
+                  },
+                  child: Container(
+                    height: AppSize.s40,
+                    width: AppSize.s40,
+                    clipBehavior: Clip.antiAlias,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: Theme.of(context).primaryColor,
+                        width: AppSize.s2,
+                      ),
+                    ),
+                    child: Center(
+                      child: Text(
+                        AppStrings.all,
+                        style: getBoldStyle(
+                          color: Theme.of(context).primaryColor,
+                          fontSize: FontSize.s20,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
                 const Spacer(),
                 Assets.image.rbmLogo.image(),
                 Assets.image.logo.image(),

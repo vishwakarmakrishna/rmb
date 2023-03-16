@@ -12,4 +12,5 @@ class IconsManager {
   static const IconData location = Icons.fmd_good;
   static const IconData idCard = Icons.badge_outlined;
   static const IconData delete = Icons.delete_outline_outlined;
+  static const IconData add = Icons.add;
 }

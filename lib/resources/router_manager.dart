@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:rmb/presentation/edit/edit_member.dart';
 import 'package:rmb/presentation/home/home.dart';
 import 'package:rmb/presentation/splash/splash.dart';
+import 'package:rmb/presentation/user/user_view.dart';
 import 'package:rmb/resources/resources.dart';
 
 export 'package:go_router/go_router.dart';
@@ -12,11 +13,13 @@ class RouterStrings {
   static const String splash = "splash";
   static const String home = "home";
   static const String edit = "edit";
+  static const String user = "user";
 
   // paths
   static final String splashPath = splash.path;
   static final String homePath = home.path;
   static final String editPath = edit.path;
+  static final String userPath = user.path;
 }
 
 extension on String {
@@ -51,6 +54,11 @@ class RouteManager {
                 path: RouterStrings.edit,
                 name: RouterStrings.editPath,
                 builder: (context, state) => const EditMember(),
+              ),
+              GoRoute(
+                path: RouterStrings.user,
+                name: RouterStrings.userPath,
+                builder: (context, state) => const UserView(),
               ),
             ],
           ),
